@@ -1,1 +1,1 @@
-from photidy.my_photos import my_photos
+from photidy.my_photos import my_photo_gallery
