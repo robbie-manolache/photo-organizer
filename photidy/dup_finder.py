@@ -19,7 +19,7 @@ def _new_photo_dims_(shp, max_pix):
     else:
         dim1 = max_pix
         dim0 = np.ceil((shp[1]/shp[0])*max_pix)
-    return dim0, dim1
+    return int(dim0), int(dim1)
 
 def _compress_photo_(p, max_pix=50, keep_pca=False):
     """
