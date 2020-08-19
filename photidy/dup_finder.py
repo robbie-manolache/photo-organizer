@@ -1,5 +1,30 @@
+import os
+import pandas as pd
 from photidy.my_photos import my_photo_gallery
 from photidy.compress_photo import compress_photo
+
+def _compress_batch_(df):
+    """
+    """
+    # initiate loop variables
+    index, values = [], []
+    n, i = df.shape[0], 0
+
+    # execute loop
+    for idx, r in df.iterrows():
+        # apply compression
+        index.append(idx)
+        values.append(compress_photo(os.path.join(r[1], r[0])))
+        # print progress
+        i += 1
+        pct = round(100*i/n)
+        p = round(pct/2)
+        s = "="*p + "."*(50-p)
+        print("\r|%s| %d%% |"%(s, pct), end="")
+
+    # insert loop values into df
+    df.loc[:, "pca_feat"] = pd.Series(values, index=index)
+    return df
 
 class photo_dup_finder(my_photo_gallery):
     """
