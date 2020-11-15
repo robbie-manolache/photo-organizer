@@ -37,10 +37,16 @@ def _filter_df_(df_in, col, vals, mode):
 
 class my_photo_gallery:
     """
+    Class object for mapping the contents of directories that contain 
+    photographs/image files. 
     """
 
     def __init__(self, photo_dir):
         """
+        Create following attributes:
+        - photo_df: data frame with file names, paths and formats
+        - all_dirs: list of unique folder paths within the directory
+        - all_ext: list of unique file formats
         """ 
         self.photo_df = _gen_photo_df_(photo_dir)
         self.set_uniq_attr()
@@ -53,11 +59,13 @@ class my_photo_gallery:
 
     def dir_counts(self):
         """
+        Generates file counts for each unique folder path.
         """
         return _gen_val_counts_(self.photo_df, "dir_path")
 
     def ext_counts(self):
         """
+        Generates file coutns for each unique file format type. 
         """
         return _gen_val_counts_(self.photo_df, "file_type")
 
