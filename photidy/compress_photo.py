@@ -45,10 +45,6 @@ def compress_photo(p, max_pix=50, keep_pca=False):
     img = pca0.fit_transform(img)
     img = pca1.fit_transform(img.transpose())
 
-    # re-transpose portrait images (may not be ideal!)
-    if shp[0] > shp[1]:
-        img = img.transpose()
-
     # return compressed object
     if keep_pca:
         return img, pca0.components_, pca1.components_
