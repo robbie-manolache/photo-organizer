@@ -12,6 +12,7 @@ def _make_photo_bw_(img):
 def _new_photo_dims_(shp, max_pix):
     """
     Sets dimensions of compressed photo version.
+    ## !!! NEEDS REVIEW !!!
     """
     dim0 = max_pix
     if shp[1] > shp[0]:
@@ -38,6 +39,7 @@ def compress_photo(p, max_pix=50, keep_pca=False):
     pca1 = PCA(dim1, random_state=42)
 
     # transpose portrait images
+    ## !!! NEEDS REVIEW !!!
     if shp[0] > shp[1]:
         img = img.transpose()
 
