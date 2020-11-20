@@ -12,19 +12,19 @@ def _make_photo_bw_(img):
 def _new_photo_dims_(shp, max_pix):
     """
     Sets dimensions of compressed photo version.
-    ## !!! NEEDS REVIEW !!!
     """
-    dim0 = max_pix
     if shp[1] > shp[0]:
-        dim1 = np.ceil((shp[0]/shp[1])*max_pix)
+        dim0 = np.ceil((shp[0]/shp[1])*max_pix)
+        dim1 = max_pix
     else:
+        dim0 = max_pix
         dim1 = np.ceil((shp[1]/shp[0])*max_pix)
     return int(dim0), int(dim1)
 
-def compress_photo(p, max_pix=50, keep_pca=False):
+def compress_photo(p, max_pix=50, keep_pca=False,
+                   always_portrait=True):
     """
     Compresses photo using the PCA method.
-    TO DO: add convolutional approach!
     """
 
     # load the image and convert to black-and-white
@@ -38,17 +38,31 @@ def compress_photo(p, max_pix=50, keep_pca=False):
     pca0 = PCA(dim0, random_state=42)
     pca1 = PCA(dim1, random_state=42)
 
-    # transpose portrait images
-    ## !!! NEEDS REVIEW !!!
-    if shp[0] > shp[1]:
+    # transpose landscape images
+    if shp[1] > shp[0]:
         img = img.transpose()
+        pca0, pca1 = pca1, pca0
 
     # apply PCA to both dimesions
     img = pca0.fit_transform(img)
     img = pca1.fit_transform(img.transpose())
+    
+    # re-transpose landscape photos if portrait not desired
+    if always_portrait:
+        pass
+    elif shp[1] > shp[0]:
+        img = img.transpose()
+        pca0, pca1 = pca1, pca0
 
     # return compressed object
     if keep_pca:
         return img, pca0.components_, pca1.components_
     else:
         return img
+    
+def recon_from_pca(img, pca0, pca1):
+    """
+    Reconstitutes a compressed photo from its PCA components
+    """
+    return np.matmul(np.matmul(img, pca1).transpose(), pca0)
+    
