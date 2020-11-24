@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from photidy.my_photos import my_photo_gallery
-from photidy.compress_photo import compress_photo
+from photidy.compress_pca import pca_compress_photo
 
 def _compress_batch_(df):
     """
@@ -14,7 +14,8 @@ def _compress_batch_(df):
     for idx, r in df.iterrows():
         # apply compression
         index.append(idx)
-        values.append(compress_photo(os.path.join(r[1], r[0])))
+        # !!! add option to use PCA vs CONV
+        values.append(pca_compress_photo(os.path.join(r[1], r[0])))
         # print progress
         i += 1
         pct = round(100*i/n)
