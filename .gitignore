@@ -131,3 +131,6 @@ dev.ipynb
 config.json
 misc.py
 .vscode/
+
+# Local file sync
+sync.py
