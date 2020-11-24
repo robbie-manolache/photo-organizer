@@ -4,7 +4,8 @@ from photidy.my_photos import my_photo_gallery
 from photidy.compress_img import pca_compress_photo, \
     conv_compress_photo
 
-def _compress_batch_(df, method="conv", max_pix=100):
+def _compress_batch_(df, method="conv", max_pix=100, 
+                     verbose=False):
     """
     TO DO: set up **kwargs 
     """
@@ -29,14 +30,17 @@ def _compress_batch_(df, method="conv", max_pix=100):
         values.append(v)
         
         # print progress
-        i += 1
-        pct = round(100*i/n)
-        p = round(pct/2)
-        s = "="*p + "."*(50-p)
-        print("\r|%s| %d%% |"%(s, pct), end="")
+        if verbose:
+            i += 1
+            pct = round(100*i/n)
+            p = round(pct/2)
+            s = "="*p + "."*(50-p)
+            print("\r|%s| %d%% |"%(s, pct), end="")
+        else:
+            pass
 
     # insert loop values into df
-    df.loc[:, "pca_feat"] = pd.Series(values, index=index)
+    df.loc[:, "compr_img"] = pd.Series(values, index=index)
     return df
 
 class photo_dup_finder(my_photo_gallery):
