@@ -1,10 +1,12 @@
 import os
 import pandas as pd
 from photidy.my_photos import my_photo_gallery
-from photidy.compress_pca import pca_compress_photo
+from photidy.compress_img import pca_compress_photo, \
+    conv_compress_photo
 
-def _compress_batch_(df):
+def _compress_batch_(df, method="conv", max_pix=100):
     """
+    TO DO: set up **kwargs 
     """
     # initiate loop variables
     index, values = [], []
@@ -12,10 +14,20 @@ def _compress_batch_(df):
 
     # execute loop
     for idx, r in df.iterrows():
+        
         # apply compression
         index.append(idx)
-        # !!! add option to use PCA vs CONV
-        values.append(pca_compress_photo(os.path.join(r[1], r[0])))
+        if method == "conv":
+            v = conv_compress_photo(os.path.join(r[1], r[0]),
+                                    max_pix=max_pix)
+        elif method == "pca":
+            v = pca_compress_photo(os.path.join(r[1], r[0]),
+                                   max_pix=max_pix)
+        else:
+            print("Method not recognised!")
+            return
+        values.append(v)
+        
         # print progress
         i += 1
         pct = round(100*i/n)
